@@ -14,6 +14,7 @@ class NativeClient {
     /**
     Return a list of spaces without using Yabai
      */
+    /**
     func querySpaces() -> [Space] {
         let activeDisplayUUID = SLSCopyActiveMenuBarDisplayIdentifier(gConnection).takeRetainedValue() as String
 
@@ -49,7 +50,7 @@ class NativeClient {
         }
         return spaces
     }
-    
+    */
     func queryDisplays() -> [Display] {
         let rawUuids = SLSCopyManagedDisplays(gConnection).takeRetainedValue() as? [CFString];
         

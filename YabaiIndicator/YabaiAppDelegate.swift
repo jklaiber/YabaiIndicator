@@ -56,7 +56,7 @@ class YabaiAppDelegate: NSObject, NSApplicationDelegate {
     
     func onSpaceRefresh() {
         let displays = gNativeClient.queryDisplays()
-        let spaceElems = gNativeClient.querySpaces()
+        let spaceElems = gYabaiClient.querySpaces()
         
         DispatchQueue.main.async {
             self.spaceModel.displays = displays
@@ -72,7 +72,8 @@ class YabaiAppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
-    
+     
+     
     func refreshBar() {
         let showDisplaySeparator = UserDefaults.standard.bool(forKey: "showDisplaySeparator")
         let showCurrentSpaceOnly = UserDefaults.standard.bool(forKey: "showCurrentSpaceOnly")
@@ -104,7 +105,7 @@ class YabaiAppDelegate: NSObject, NSApplicationDelegate {
                         // NSLog("Refreshing on main thread")
                         self.onSpaceRefresh()
                     }
-                } else if msg == "refresh windows" {
+                }else if msg == "refresh windows" {
                     receiverQueue.async {
                         // NSLog("Refreshing on main thread")
                         self.onWindowRefresh()

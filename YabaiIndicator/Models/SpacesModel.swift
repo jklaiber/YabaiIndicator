@@ -9,20 +9,21 @@ import Foundation
 
 class SpaceModel: ObservableObject {
     @Published var spaces:[Space] = []
-    @Published var windows:[Window] = []
     @Published var displays:[Display] = []
+    @Published var windows:[Window] = []
 }
 
 struct Space: Hashable {
     let spaceid: UInt64
+    let spaceLabel: String
+    let hasWindows: [Int]
     let uuid: String
     let visible: Bool
     let active: Bool
     let display: Int
     let index: Int // mission control index (for sanitys sake)
     let yabaiIndex: Int // continuous index (for addresssing)
-    let type: SpaceType // 0 - normal space 4 - fullscreen space // -1 divider
-    // var id: String { uuid }
+    var id: String { uuid }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(spaceid)
