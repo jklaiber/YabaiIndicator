@@ -21,7 +21,7 @@ private func drawText(symbol: NSString, color: NSColor, size: CGSize) {
 
 func generateImage(symbol: NSString, active: Bool, visible: Bool, hasWindows: [Int]) -> NSImage {
     let size = CGSize(width: 24, height: 18)
-    let cornerRadius:CGFloat = 5
+    let cornerRadius:CGFloat = 6
     let canvas = NSRect(origin: CGPoint.zero, size: size)
     
     let image = NSImage(size: size)

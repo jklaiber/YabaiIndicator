@@ -21,6 +21,7 @@ struct Space: Hashable {
     let visible: Bool
     let active: Bool
     let display: Int
+    let isFullscreen: Bool
     let index: Int // mission control index (for sanitys sake)
     let yabaiIndex: Int // continuous index (for addresssing)
     var id: String { uuid }

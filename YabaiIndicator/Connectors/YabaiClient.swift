@@ -53,7 +53,7 @@ class YabaiClient {
     
     func querySpaces() -> [Space] {
         if let r = yabaiSocketCall("-m", "query", "--spaces").response as? [[String: Any]] {
-            let spaces = r.compactMap{Space(spaceid: $0["id"] as! UInt64, spaceLabel: $0["label"] as! String, hasWindows: $0["windows"] as! [Int], uuid: $0["uuid"] as! String, visible: $0["is-visible"] as! Bool, active: $0["has-focus"] as! Bool, display: $0["display"] as! Int, index: $0["index"] as! Int, yabaiIndex: $0["index"] as! Int)}
+            let spaces = r.compactMap{Space(spaceid: $0["id"] as! UInt64, spaceLabel: $0["label"] as! String, hasWindows: $0["windows"] as! [Int], uuid: $0["uuid"] as! String, visible: $0["is-visible"] as! Bool, active: $0["has-focus"] as! Bool, display: $0["display"] as! Int, isFullscreen: $0["is-native-fullscreen"] as! Bool, index: $0["index"] as! Int, yabaiIndex: $0["index"] as! Int)}
             return spaces
         }
         return []

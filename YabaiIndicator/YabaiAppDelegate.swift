@@ -38,52 +38,42 @@ class YabaiAppDelegate: NSObject, NSApplicationDelegate {
 
     @objc
     func onSpaceChanged(_ notification: Notification) {
-        onSpaceRefresh()
+        onRefresh()
     }
     
     @objc
     func onDisplayChanged(_ notification: Notification) {
-        onSpaceRefresh()
+        onRefresh()
     }
     
     func refreshData() {
         // NSLog("Refreshing")
         receiverQueue.async {
-            self.onSpaceRefresh()
-            self.onWindowRefresh()
+            self.onRefresh()
         }
     }
     
-    func onSpaceRefresh() {
+    func onRefresh() {
+        let windows = gYabaiClient.queryWindows()
         let displays = gNativeClient.queryDisplays()
         let spaceElems = gYabaiClient.querySpaces()
-        
         DispatchQueue.main.async {
+            self.spaceModel.windows = windows
             self.spaceModel.displays = displays
             self.spaceModel.spaces = spaceElems
         }
     }
-    
-    func onWindowRefresh() {
-        if UserDefaults.standard.buttonStyle == .windows {
-            let windows = gYabaiClient.queryWindows()
-            DispatchQueue.main.async {
-                self.spaceModel.windows = windows
-            }
-        }
-    }
-     
      
     func refreshBar() {
-        let showDisplaySeparator = UserDefaults.standard.bool(forKey: "showDisplaySeparator")
+//        let showDisplaySeparator = UserDefaults.standard.bool(forKey: "showDisplaySeparator")
         let showCurrentSpaceOnly = UserDefaults.standard.bool(forKey: "showCurrentSpaceOnly")
-        
+
         let numButtons = showCurrentSpaceOnly ?  spaceModel.displays.count : spaceModel.spaces.count
-        
-        var newWidth = CGFloat(numButtons) * itemWidth
-        if !showDisplaySeparator {
-            newWidth -= CGFloat((spaceModel.displays.count - 1) * 10)
-        }
+
+        let newWidth = CGFloat(numButtons) * itemWidth
+//        if !showDisplaySeparator {
+//            newWidth -= CGFloat((spaceModel.displays.count - 1) * 10)
+//        }
         statusBarItem?.button?.frame.size.width = newWidth
         statusBarItem?.button?.subviews[0].frame.size.width = newWidth
 
@@ -103,12 +93,12 @@ class YabaiAppDelegate: NSObject, NSApplicationDelegate {
                 } else if msg == "refresh spaces" {
                     receiverQueue.async {
                         // NSLog("Refreshing on main thread")
-                        self.onSpaceRefresh()
+                        self.onRefresh()
                     }
                 }else if msg == "refresh windows" {
                     receiverQueue.async {
                         // NSLog("Refreshing on main thread")
-                        self.onWindowRefresh()
+                        self.onRefresh()
                     }
                 }
             }

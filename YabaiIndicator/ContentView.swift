@@ -39,7 +39,9 @@ struct ContentView: View {
     private func generateSpaces() -> [Space] {
         var shownSpaces = [Space]()
         for space in spaceModel.spaces {
-            shownSpaces.append(space)
+            if !space.isFullscreen {
+                shownSpaces.append(space)
+            }
         }
         return shownSpaces.sorted(by: { $0.spaceLabel < $1.spaceLabel })
     }
