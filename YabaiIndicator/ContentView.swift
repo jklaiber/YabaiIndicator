@@ -39,7 +39,7 @@ struct ContentView: View {
     private func generateSpaces() -> [Space] {
         var shownSpaces = [Space]()
         for space in spaceModel.spaces {
-            if !space.isFullscreen {
+            if !space.isFullscreen && space.spaceLabel != "" && !space.spaceLabel.hasPrefix("r") {
                 shownSpaces.append(space)
             }
         }
@@ -47,7 +47,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        HStack (spacing: 4) {
+        HStack (spacing: 3) {
             if buttonStyle == .numeric || spaceModel.displays.count > 0 {
                 ForEach(generateSpaces(), id: \.self) {space in
                     SpaceButton(space: space)

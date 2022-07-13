@@ -15,7 +15,6 @@ private func drawText(symbol: NSString, color: NSColor, size: CGSize) {
     let boundingBox = symbol.size(withAttributes: attrs)
     let x:CGFloat = size.width / 2 - boundingBox.width / 2
     let y:CGFloat = size.height / 2 - boundingBox.height / 2
-
     symbol.draw(at: NSPoint(x: x, y: y), withAttributes: [.font: NSFont.systemFont(ofSize: fontSize), .foregroundColor: color])
 }
 
@@ -53,7 +52,7 @@ func generateImage(symbol: NSString, active: Bool, visible: Bool, hasWindows: [I
     } else if !hasWindows.isEmpty {
         image.lockFocus()
         strokeColor.setStroke()
-        drawText(symbol: NSString(format: "%@%@", "**", symbol), color: strokeColor, size: size)
+        drawText(symbol: NSString(format: "%@%@", "* ", symbol), color: strokeColor, size: size)
         image.unlockFocus()
     } else {
         image.lockFocus()
