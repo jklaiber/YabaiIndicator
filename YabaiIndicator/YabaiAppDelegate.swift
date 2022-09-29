@@ -31,7 +31,7 @@ class YabaiAppDelegate: NSObject, NSApplicationDelegate {
     var spaceModel = SpaceModel()
     
     let statusBarHeight = 22
-    let itemWidth:CGFloat = 30
+    let itemWidth:CGFloat = 25
     
     var sinks: [AnyCancellable?] = []
     var receiverQueue = DispatchQueue(label: "yabai-indicator.socket.receiver")
