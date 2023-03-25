@@ -12,7 +12,7 @@
 #include <sys/un.h>
 #include <sys/socket.h>
 
-#define MAXLEN 256
+#define MAXLEN 512
 #define SOCKET_PATH_FMT         "/tmp/yabai_%s.socket"
 #define FAILURE_MESSAGE "\x07"
 
@@ -21,7 +21,7 @@ static inline int socket_connect(int *sockfd, char *socket_path)
     struct sockaddr_un socket_address;
     socket_address.sun_family = AF_UNIX;
 
-    *sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+//    *sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
     if (*sockfd == -1) return -1;
 
     snprintf(socket_address.sun_path, sizeof(socket_address.sun_path), "%s", socket_path);
@@ -59,8 +59,10 @@ int send_message(int argc, char** argv, char** response) {
         message_length += argl[i];
     }
 
-    char *message = malloc(message_length);
-    char *temp = message;
+    char *message = malloc(sizeof(int)+message_length);
+    char *temp = sizeof(int)+message;
+    
+    memcpy(message, &message_length, sizeof(int));
     
     for (int i = 1; i < argc; ++i) {
         memcpy(temp, argv[i], argl[i]);
@@ -70,6 +72,12 @@ int send_message(int argc, char** argv, char** response) {
     *temp++ = '\0';
     
     int sockfd;
+    sockfd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (sockfd == -1) {
+        snprintf(*response, BUFSIZ, "yabai-msg: failed to open socket..\n");
+        return EXIT_FAILURE;
+    }
+    
     char socket_file[MAXLEN];
     snprintf(socket_file, sizeof(socket_file), SOCKET_PATH_FMT, user);
     
@@ -78,7 +86,7 @@ int send_message(int argc, char** argv, char** response) {
         return EXIT_FAILURE;
     }
     
-    if (send(sockfd, message, message_length, 0) == -1) {
+    if (send(sockfd, message, sizeof(int)+message_length, 0) == -1) {
         snprintf(*response, BUFSIZ, "yabai-msg: failed to send data..\n");
         return EXIT_FAILURE;
     }
